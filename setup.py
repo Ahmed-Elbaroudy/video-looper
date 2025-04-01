@@ -1,14 +1,41 @@
 from setuptools import setup, find_packages
 
+# ASCII art banner
+banner = r"""
+ ██▒   █▓ ██▓▓█████▄ ▓█████  ▒█████      ██▓     ▒█████   ▒█████   ██▓███  ▓█████  ██▀███  
+▓██░   █▒▓██▒▒██▀ ██▌▓█   ▀ ▒██▒  ██▒   ▓██▒    ▒██▒  ██▒▒██▒  ██▒▓██░  ██▒▓█   ▀ ▓██ ▒ ██▒
+ ▓██  █▒░▒██▒░██   █▌▒███   ▒██░  ██▒   ▒██░    ▒██░  ██▒▒██░  ██▒▓██░ ██▓▒▒███   ▓██ ░▄█ ▒
+  ▒██ █░░░██░░▓█▄   ▌▒▓█  ▄ ▒██   ██░   ▒██░    ▒██   ██░▒██   ██░▒██▄█▓▒ ▒▒▓█  ▄ ▒██▀▀█▄  
+   ▒▀█░  ░██░░▒████▓ ░▒████▒░ ████▓▒░   ░██████▒░ ████▓▒░░ ████▓▒░▒██▒ ░  ░░▒████▒░██▓ ▒██▒
+   ░ ▐░  ░▓   ▒▒▓  ▲░ ▒░ ░░ ▒░▒░▒░    ░ ▒░▓  ░░ ▒░▒░▒░ ░ ▒░▒░▒░ ▒▓▒░ ░  ░░░ ▒░ ░░ ▒▓ ░▒▓░
+   ░ ░░   ▒ ░ ░ ▒  ▒  ░ ░  ░  ░ ▒ ▒░    ░ ░ ▒  ░  ░ ▒ ▒░   ░ ▒ ▒░ ░▒ ░      ░ ░  ░  ░▒ ░ ▒░
+     ░░   ▒ ░ ░ ░  ░    ░   ░ ░ ░ ▒       ░ ░   ░ ░ ░ ▒  ░ ░ ░ ▒  ░░          ░     ░░   ░ 
+      ░   ░     ░       ░  ░    ░ ░         ░  ░    ░ ░      ░ ░              ░  ░   ░     
+     ░        ░
+"""
+
 setup(
     name="video_looper",
     version="1.0.0",
     description="A simple video looper application",
-    long_description=open('README.md').read(),
+    long_description=f"""
+{banner}
+
+Video Looper is a simple Python program that allows users to loop video files.
+It features automatic content analysis for optimal loop points, real-time playback,
+and options to save the looped video.
+
+Features:
+- Loop videos for a specific number of times or duration
+- Automatic content analysis for optimal loop points
+- Real-time video playback
+- Progress indicator during processing
+- Option to save the looped video
+- Command line interface with user-friendly prompts
+    """,
     long_description_content_type='text/markdown',
     author="Ahmed Elbaroudy",
-    author_email="",  # Add your email if you want
-    url="https://github.com/yourusername/video_looper",  # Update with your GitHub URL
+    url="https://github.com/Ahmed-Elbaroudy/video-looper.git",
     packages=find_packages(),
     install_requires=[
         'opencv-python>=4.5.0',
