@@ -10,7 +10,6 @@ from pathlib import Path
 import numpy as np
 import cv2
 
-# Initialize colorama
 init()
 
 def loading_animation(duration):
@@ -39,7 +38,7 @@ def print_banner():
   ▒██ █░░░██░░▓█▄   ▌▒▓█  ▄ ▒██   ██░   ▒██░    ▒██   ██░▒██   ██░▒██▄█▓▒ ▒▒▓█  ▄ ▒██▀▀█▄  
    ▒▀█░  ░██░░▒████▓ ░▒████▒░ ████▓▒░   ░██████▒░ ████▓▒░░ ████▓▒░▒██▒ ░  ░░▒████▒░██▓ ▒██▒
    ░ ▐░  ░▓   ▒▒▓  ▲░ ▒░ ░░ ▒░▒░▒░    ░ ▒░▓  ░░ ▒░▒░▒░ ░ ▒░▒░▒░ ▒▓▒░ ░  ░░░ ▒░ ░░ ▒▓ ░▒▓░
-   ░ ░░   ▒ ░ ░ ▒  ▒  ░ ░  ░  ░ ▒ ▒░    ░ ░ ▒  ░  ░ ▒ ▒░   ░ ▒ ▒░ ░▒ ░      ░ ░  ░  ░▒ ░ ▒░
+   ░ ░░   ▒ ░ ░ ▒  ▲  ░ ░  ░  ░ ▒ ▒░    ░ ░ ▒  ░  ░ ▒ ▒░   ░ ▒ ▒░ ░▒ ░      ░ ░  ░  ░▒ ░ ▒░
      ░░   ▒ ░ ░ ░  ░    ░   ░ ░ ░ ▒       ░ ░   ░ ░ ░ ▒  ░ ░ ░ ▒  ░░          ░     ░░   ░ 
       ░   ░     ░       ░  ░    ░ ░         ░  ░    ░ ░      ░ ░              ░  ░   ░     
      ░        ░
@@ -55,19 +54,15 @@ def validate_video_path(video_path):
         if not video_path:
             raise ValueError("Video path cannot be empty")
             
-        # Check if file exists
         if not os.path.exists(video_path):
             print(Fore.RED + "\nFile not found." + Style.RESET_ALL)
             return False
 
-        # Check if it's a file
         if not os.path.isfile(video_path):
             print(Fore.RED + "\nThis is not a file." + Style.RESET_ALL)
             return False
 
-        # Check file permissions
         try:
-            # Check read permissions
             with open(video_path, 'rb') as f:
                 f.read(1)
         except PermissionError:
@@ -77,7 +72,6 @@ def validate_video_path(video_path):
             print(Fore.RED + f"\nError accessing file: {str(e)}" + Style.RESET_ALL)
             return False
 
-        # Check file size
         try:
             file_size = os.path.getsize(video_path)
             if file_size > 10 * 1024 * 1024 * 1024:  # 10GB limit
@@ -94,56 +88,43 @@ def validate_video_path(video_path):
         return False
 
 def analyze_video_content(video_path):
-    """Analyze video content to determine optimal loop points"""
     try:
-        # Open video file
         cap = cv2.VideoCapture(video_path)
-        
-        # Get video properties
         fps = cap.get(cv2.CAP_PROP_FPS)
         frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         duration = frame_count / fps
-        
-        # Analyze frame similarity
-        frame_interval = int(fps * 2)  # Check every 2 seconds
+        frame_interval = int(fps * 2)
         similarity_threshold = 0.95
-        
-        # Process frames
         frame_data = []
+        
         for i in range(0, frame_count, frame_interval):
             cap.set(cv2.CAP_PROP_POS_FRAMES, i)
             ret, frame = cap.read()
             if not ret:
                 break
                 
-            # Convert to grayscale and resize for faster processing
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             small = cv2.resize(gray, (100, 100))
             frame_data.append(small.flatten())
         
         cap.release()
-        
-        # Convert to numpy array
         frame_data = np.array(frame_data)
-        
-        # Calculate similarity between frames
         similarities = []
+        
         for i in range(len(frame_data) - 1):
             similarity = np.corrcoef(frame_data[i], frame_data[i + 1])[0, 1]
             similarities.append(similarity)
         
-        # Find optimal loop points
         optimal_points = []
+        
         for i in range(len(similarities) - 1):
             if similarities[i] > similarity_threshold:
                 frame_time = (i * frame_interval) / fps
                 optimal_points.append(frame_time)
         
-        # If no good points found, use default
         if not optimal_points:
             optimal_points = [duration / 2]
         
-        # Return the best loop point
         return max(optimal_points)
         
     except Exception as e:
@@ -155,9 +136,7 @@ def ensure_directory_exists(directory):
         if not directory:
             raise ValueError("Directory path cannot be empty")
             
-        # Check if directory exists
         if not os.path.exists(directory):
-            # Try to create directory
             try:
                 os.makedirs(directory)
             except PermissionError:
@@ -167,7 +146,6 @@ def ensure_directory_exists(directory):
                 print(Fore.RED + f"\nError creating directory: {str(e)}" + Style.RESET_ALL)
                 return False
 
-        # Check write permissions
         try:
             test_file = os.path.join(directory, "test_permission.txt")
             with open(test_file, 'w') as f:
@@ -190,7 +168,6 @@ def render_video(final_clip, output_path, fps):
     try:
         print(Fore.GREEN + "\nStarting video rendering..." + Style.RESET_ALL)
         
-        # Set up optimized rendering parameters
         final_clip.write_videofile(
             output_path,
             fps=fps,
@@ -210,7 +187,6 @@ def render_video(final_clip, output_path, fps):
         print(Fore.YELLOW + "\nTrying alternative rendering method..." + Style.RESET_ALL)
         
         try:
-            # Try with even faster settings
             final_clip.write_videofile(
                 output_path,
                 fps=fps,
@@ -225,23 +201,18 @@ def render_video(final_clip, output_path, fps):
             print(Fore.YELLOW + "\nPlease check the video file and try again." + Style.RESET_ALL)
 
 def create_looping_video(clip, num_loops, duration, fps):
-    """Create the looping video with optimized settings"""
     try:
-        # Create a progress indicator
         print(Fore.YELLOW + "\nCreating video loop..." + Style.RESET_ALL)
         
-        # Create the looped video
         if num_loops:
             clips = [clip] * num_loops
             final_clip = concatenate_videoclips(clips)
         else:
-            # Calculate number of repeats needed
             num_repeats = int(duration / clip.duration) + 1
             clips = [clip] * num_repeats
             final_clip = concatenate_videoclips(clips)
             final_clip = final_clip.subclip(0, duration)
 
-        # Optimize the final clip
         final_clip = final_clip.set_fps(fps)
         final_clip = final_clip.set_duration(duration)
         
@@ -269,7 +240,6 @@ def loop_video():
     try:
         print_banner()
         
-        # Get video file path
         video_path = ""
         while True:
             try:
@@ -285,7 +255,6 @@ def loop_video():
             except Exception as e:
                 print(Fore.RED + f"\nError processing video path: {str(e)}" + Style.RESET_ALL)
 
-        # Ask if user wants to save the looped video
         save_choice = ""
         while True:
             try:
@@ -300,7 +269,6 @@ def loop_video():
             except Exception as e:
                 print(Fore.RED + f"\nError processing save choice: {str(e)}" + Style.RESET_ALL)
 
-        # Ask for save path if saving
         save_path = None
         if save_video:
             default_save_path = os.path.dirname(video_path)
@@ -324,28 +292,22 @@ def loop_video():
                     print(Fore.RED + f"\nError processing save path: {str(e)}" + Style.RESET_ALL)
 
         try:
-            # Open the video file
             clip = VideoFileClip(video_path)
-
-            # Get video properties
             fps = clip.fps
             frame_width = int(clip.w)
             frame_height = int(clip.h)
             total_frames = int(clip.duration * fps)
-            video_duration = clip.duration  # in seconds
+            video_duration = clip.duration
 
-            # Set up video writer if saving
             output_filename = os.path.splitext(os.path.basename(video_path))[0] + "_looped.mp4"
             output_path = os.path.join(save_path, output_filename)
             
-            # Ensure the output directory exists
             if not ensure_directory_exists(save_path):
                 print(Fore.RED + "\nFailed to create output directory. Please check permissions." + Style.RESET_ALL)
                 return
 
             print(Fore.GREEN + f"\nOutput file will be saved as: {output_path}" + Style.RESET_ALL)
 
-            # Ask user for playback mode
             mode = 0
             while True:
                 try:
@@ -364,7 +326,6 @@ def loop_video():
                 except Exception as e:
                     print(Fore.RED + f"\nError processing playback mode: {str(e)}" + Style.RESET_ALL)
 
-            # Get playback parameters based on mode
             num_loops = None
             duration = None
             
@@ -381,27 +342,23 @@ def loop_video():
                     float,
                     "Please enter a valid duration in minutes",
                     min_value=0.1,
-                    max_value=120  # Limit to 2 hours max
+                    max_value=120
                 ) * 60
 
-            # Analyze video content to determine optimal loop points
             print(Fore.YELLOW + "\nAnalyzing video content for optimal loop points..." + Style.RESET_ALL)
             optimal_duration = analyze_video_content(video_path)
             
             if optimal_duration is None:
                 print(Fore.YELLOW + "\nUsing default loop duration." + Style.RESET_ALL)
-                optimal_duration = video_duration * 2  # Default to double the original duration
+                optimal_duration = video_duration * 2
             else:
                 print(Fore.GREEN + f"\nFound optimal loop duration: {optimal_duration:.1f} seconds" + Style.RESET_ALL)
 
-            # Create the looped video
             final_clip = create_looping_video(clip, num_loops, duration, fps)
 
-            # Save the video if requested
             if save_video:
                 render_video(final_clip, output_path, fps)
 
-            # Clean up
             try:
                 clip.close()
                 final_clip.close()
