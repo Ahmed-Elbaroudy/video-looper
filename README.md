@@ -1,11 +1,31 @@
-# Video Looper (Python Version)
+# Video Looper
+
+```
+ ██▒   █▓ ██▓▓█████▄ ▓█████  ▒█████      ██▓     ▒█████   ▒█████   ██▓███  ▓█████  ██▀███  
+▓██░   █▒▓██▒▒██▀ ██▌▓█   ▀ ▒██▒  ██▒   ▓██▒    ▒██▒  ██▒▒██▒  ██▒▓██░  ██▒▓█   ▀ ▓██ ▒ ██▒
+ ▓██  █▒░▒██▒░██   █▌▒███   ▒██░  ██▒   ▒██░    ▒██░  ██▒▒██░  ██▒▓██░ ██▓▒▒███   ▓██ ░▄█ ▒
+  ▒██ █░░░██░░▓█▄   ▌▒▓█  ▄ ▒██   ██░   ▒██░    ▒██   ██░▒██   ██░▒██▄█▓▒ ▒▒▓█  ▄ ▒██▀▀█▄  
+   ▒▀█░  ░██░░▒████▓ ░▒████▒░ ████▓▒░   ░██████▒░ ████▓▒░░ ████▓▒░▒██▒ ░  ░░▒████▒░██▓ ▒██▒
+   ░ ▐░  ░▓   ▒▒▓  ▲░ ▒░ ░░ ▒░▒░▒░    ░ ▒░▓  ░░ ▒░▒░▒░ ░ ▒░▒░▒░ ▒▓▒░ ░  ░░░ ▒░ ░░ ▒▓ ░▒▓░
+   ░ ░░   ▒ ░ ░ ▒  ▒  ░ ░  ░  ░ ▒ ▒░    ░ ░ ▒  ░  ░ ▒ ▒░   ░ ▒ ▒░ ░▒ ░      ░ ░  ░  ░▒ ░ ▒░
+     ░░   ▒ ░ ░ ░  ░    ░   ░ ░ ░ ▒       ░ ░   ░ ░ ░ ▒  ░ ░ ░ ▒  ░░          ░     ░░   ░ 
+      ░   ░     ░       ░  ░    ░ ░         ░  ░    ░ ░      ░ ░              ░  ░   ░     
+     ░        ░
+```
 
 A simple Python program that allows users to loop a video file and optionally save the looped video.
 
-## Requirements
+## Features
 
-- Python 3.x
-- OpenCV (cv2)
+- Simple and intuitive user interface
+- Supports any video format supported by OpenCV
+- Real-time video playback
+- Two playback modes:
+  - Loop for a specific number of times
+  - Loop for a specific duration (in minutes)
+- Option to save the looped video
+- Progress indicator showing which loop is currently playing
+- Ability to quit at any time by pressing 'q'
 
 ## Installation
 
@@ -33,14 +53,7 @@ The video will play in a window. A progress indicator will show which loop is cu
 
 If you chose to save the video, it will be saved as "[original_filename]_looped.mp4" in the same directory as the original video.
 
-## Features
+## Requirements
 
-- Simple and intuitive user interface
-- Supports any video format supported by OpenCV
-- Real-time video playback
-- Two playback modes:
-  - Loop for a specific number of times
-  - Loop for a specific duration (in minutes)
-- Option to save the looped video
-- Progress indicator showing which loop is currently playing
-- Ability to quit at any time by pressing 'q'
+- Python 3.x
+- OpenCV (cv2)
