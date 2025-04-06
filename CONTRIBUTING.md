@@ -47,7 +47,3 @@ When reporting a bug, please include:
 - Ensure your code is well-tested
 - Update relevant documentation
 - Follow the existing code style
-
-## Code of Conduct
-
-Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
