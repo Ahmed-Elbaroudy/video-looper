@@ -38,7 +38,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-Run the program:
+Run the program NOTE: Run this program in a terminal that has admin permission or else the program will not work
 ```bash
 python video_looper.py
 ```
